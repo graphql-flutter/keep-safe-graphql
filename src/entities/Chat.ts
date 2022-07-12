@@ -6,8 +6,10 @@ export class Chat {
   id: number;
 
   @Field()
-  message: string;
+  description: string;
 
   @Field()
   name: string;
+
+  // TODO: add the list of the message
 }

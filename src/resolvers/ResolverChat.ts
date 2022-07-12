@@ -11,7 +11,8 @@ import {
 import { Chat } from "../entities/Chat";
 
 const chats: Chat[] = [];
-const channel = "CHAT_CHANNEL";
+const new_mesage = "NEW_MESSAGE_CHANNEL";
+const new_chat = "NEW_CHAT_CHANNEL";
 
 @Resolver()
 export class ChatResolver {
@@ -24,17 +25,22 @@ export class ChatResolver {
   async createChat(
     @PubSub() pubSub: PubSubEngine,
     @Arg("name") name: string,
-    @Arg("message") message: string
+    @Arg("desciption") description: string
   ): Promise<Chat> {
-    const chat = { id: chats.length + 1, name, message };
+    const chat = { id: chats.length + 1, name, description };
     chats.push(chat);
     const payload = chat;
-    await pubSub.publish(channel, payload);
+    await pubSub.publish(new_chat, payload);
     return chat;
   }
 
-  @Subscription({ topics: channel })
-  messageSent(@Root() { id, name, message }: Chat): Chat {
-    return { id, name, message };
+  @Subscription({ topics: new_mesage })
+  messageSent(@Root() { id, name, description }: Chat): Chat {
+    return { id, name, description };
+  }
+
+  @Subscription({ topics: new_chat })
+  chatCreated(@Root() { id, name, description }: Chat): Chat {
+    return { id, name, description };
   }
 }
