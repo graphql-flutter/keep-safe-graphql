@@ -40,6 +40,9 @@ export class ChatResolver {
 
   @Subscription({ topics: new_chat })
   chatCreated(): Chat {
+    // TODO: check how to write a subscrition in the following case
+    if (chats.length === 0)
+      return {id: -1, name: "none", description: "none"};
     return chats[chats.length - 1];
   }
 }
