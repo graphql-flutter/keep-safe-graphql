@@ -33,6 +33,16 @@ export class ChatResolver {
     return chat;
   }
 
+
+  // should delete all the chats, greater than the id provided.
+  @Mutation(() => Chat)
+  deleteTestChats(@Arg("id") id: number): Chat {
+    for (let i = chats.length; i > id; i--) {
+      chats.pop();
+    }
+    return chats[chats.length - 1];
+  }
+
   @Subscription({ topics: new_mesage })
   messageSent(@Root() { id, name, description }: Chat): Chat {
     return { id, name, description };
