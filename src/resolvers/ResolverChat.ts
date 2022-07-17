@@ -33,7 +33,6 @@ export class ChatResolver {
     return chat;
   }
 
-
   // should delete all the chats, greater than the id provided.
   @Mutation(() => Chat)
   deleteTestChats(@Arg("id") id: number): Chat {
